@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Aventura de Joaquín 🏕️</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Paleta principal: tierra, ámbar, siena, musgo */
+  --br9:#2C1A00;--br8:#4A2E05;--br7:#6B3F0A;--br6:#8B5216;--br4:#B87333;--br2:#D4A96A;--br1:#F5ECD8;
+  --mo9:#1A2200;--mo8:#2E3D05;--mo7:#445A0A;--mo6:#5C7A14;--mo4:#82A832;--mo2:#B8D470;--mo1:#EDF5D0;
+  --am7:#5C3200;--am6:#8B5A00;--am4:#C47F00;--am2:#EDBC5A;--am1:#FDF3D8;
+  --sk7:#1A3050;--sk6:#2B5080;--sk4:#4A7FBF;--sk2:#9FC5E8;--sk1:#E8F4FD;
+  --rd7:#5C1A00;--rd6:#8B2500;--rd4:#C44020;--rd2:#EDA090;--rd1:#FDF0EC;
+  --pp7:#2A1550;--pp6:#4A2D8A;--pp4:#7B5EC4;--pp2:#C0AEED;--pp1:#F2EFFE;
+  --bg:#F7F0E4;
+  --surf:#FFFCF5;--surf2:#F2E9D8;
+  --tx:#2A1A06;--txm:#5C3E1A;
+  --bdr:rgba(100,60,10,.14);--bdrS:rgba(100,60,10,.28);
+  --rad:14px;--radL:20px;
+  /* correct/wrong */
+  --ok1:#EDF5D0;--ok2:#B8D470;--ok7:#2E3D05;
+  --no1:#FDF0EC;--no2:#EDA090;--no7:#5C1A00;
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;color:var(--tx);
+  display:flex;flex-direction:column;align-items:center;padding:20px 12px 50px;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -5%,rgba(180,120,30,.13) 0%,transparent 65%),
+    repeating-linear-gradient(135deg,transparent,transparent 40px,rgba(100,60,10,.018) 40px,rgba(100,60,10,.018) 80px)}
+
+.hdr{width:100%;max-width:720px;display:flex;align-items:center;justify-content:space-between;padding:0 4px 16px;gap:12px}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:26px;color:var(--br7);line-height:1}
+.hdr-title span{color:var(--am4)}
+.score-pill{display:flex;align-items:center;gap:7px;background:var(--surf);border:1px solid var(--bdrS);
+  border-radius:99px;padding:6px 14px;font-size:13px;font-weight:700;color:var(--br7);flex-shrink:0}
+
+.card{width:100%;max-width:720px;background:var(--surf);border-radius:var(--radL);border:1px solid var(--bdr);
+  box-shadow:0 4px 28px rgba(100,60,10,.10),0 1px 4px rgba(100,60,10,.07);overflow:hidden}
+
+.prog-area{padding:16px 24px 0;display:flex;align-items:center;gap:10px}
+.ch-tag{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--br6);
+  white-space:nowrap;background:var(--br1);padding:3px 10px;border-radius:99px;border:1px solid var(--br2)}
+.bar-wrap{flex:1;height:7px;background:var(--surf2);border-radius:99px;overflow:hidden;border:1px solid var(--bdr)}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--br6),var(--am4));border-radius:99px;
+  transition:width .55s cubic-bezier(.22,.68,0,.99)}
+
+.sbody{padding:14px 24px 6px}
+.illus{text-align:center;font-size:56px;padding:4px 0 8px;line-height:1;animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+.crow{display:flex;align-items:flex-start;gap:12px;margin-bottom:11px}
+.av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;border:2px solid var(--bdrS)}
+.av-n{background:var(--am1);border-color:var(--am2)}
+.av-j{background:var(--br1);border-color:var(--br2)}
+.av-p{background:var(--mo1);border-color:var(--mo2)}
+.av-r{background:var(--sk1);border-color:var(--sk2)}
+
+.bub{background:var(--surf2);border:1px solid var(--bdr);border-radius:13px;border-top-left-radius:3px;padding:9px 13px;flex:1}
+.bub-name{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;color:var(--txm)}
+.bub p{font-size:14px;line-height:1.65;color:var(--tx)}
+
+.ib{border-radius:12px;padding:12px 15px;margin:9px 0;border:1px solid}
+.ib-br{background:var(--br1);border-color:var(--br2)}.ib-mo{background:var(--mo1);border-color:var(--mo2)}
+.ib-am{background:var(--am1);border-color:var(--am2)}.ib-sk{background:var(--sk1);border-color:var(--sk2)}
+.ib-rd{background:var(--rd1);border-color:var(--rd2)}.ib-pp{background:var(--pp1);border-color:var(--pp2)}
+.ib-title{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px}
+.ib-br .ib-title{color:var(--br7)}.ib-mo .ib-title{color:var(--mo7)}.ib-am .ib-title{color:var(--am6)}
+.ib-sk .ib-title{color:var(--sk6)}.ib-rd .ib-title{color:var(--rd6)}.ib-pp .ib-title{color:var(--pp6)}
+.ib p{font-size:13.5px;line-height:1.65;color:var(--tx)}
+
+.carea{padding:10px 24px 22px;display:flex;flex-direction:column;gap:8px}
+.hint{font-size:12px;color:var(--txm);font-weight:600;text-align:center;padding:2px 0 5px}
+.qbadge{display:inline-flex;align-items:center;gap:5px;background:var(--pp1);color:var(--pp6);
+  font-size:11px;font-weight:800;padding:4px 12px;border-radius:99px;border:1px solid var(--pp2);
+  margin-bottom:7px;letter-spacing:.05em}
+.qq{font-size:14px;color:var(--txm);font-weight:700;margin-bottom:9px;line-height:1.5}
+
+.abtn{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:11px;
+  border:1.5px solid var(--bdrS);background:var(--surf);font-family:'Nunito',sans-serif;
+  font-size:14px;font-weight:600;color:var(--tx);cursor:pointer;text-align:left;
+  transition:background .15s,border-color .15s,transform .15s;width:100%}
+.abtn:hover:not(:disabled){background:var(--surf2);border-color:var(--br4);transform:translateX(3px)}
+.abtn .lbl{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;
+  border-radius:50%;background:var(--surf2);border:1.5px solid var(--bdrS);
+  font-size:12px;font-weight:800;flex-shrink:0;color:var(--txm);transition:background .15s,color .15s;padding:0 2px}
+.abtn.correct{background:var(--ok1);border-color:var(--ok2);color:var(--ok7)}
+.abtn.correct .lbl{background:var(--mo4);border-color:var(--mo6);color:#fff}
+.abtn.wrong{background:var(--no1);border-color:var(--no2);color:var(--no7)}
+.abtn.wrong .lbl{background:var(--no2);border-color:var(--rd4);color:var(--no7)}
+.abtn:disabled{pointer-events:none;opacity:.52}
+.abtn.go-btn{background:var(--mo1);border-color:var(--mo2);color:var(--mo7);display:none}
+.abtn.retry-btn{background:var(--am1);border-color:var(--am2);color:var(--am6)}
+.abtn.replay-btn{background:var(--mo1);border-color:var(--mo2);color:var(--mo7)}
+
+.fb{border-radius:10px;padding:10px 14px;font-size:13px;font-weight:600;line-height:1.5;display:none;margin-top:2px}
+.fb.ok{display:block;background:var(--ok1);border:1px solid var(--ok2);color:var(--ok7)}
+.fb.bad{display:block;background:var(--no1);border:1px solid var(--no2);color:var(--no7)}
+
+.scene{display:none}
+.scene.active{display:block;animation:fadeUp .32s cubic-bezier(.22,.68,0,.99)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* FINAL */
+.sum-header{text-align:center;padding:8px 0 14px}
+.sum-big{font-size:36px;letter-spacing:5px}
+.sum-msg{font-family:'Fredoka One',cursive;font-size:20px;color:var(--br7);margin-top:7px}
+.sum-sub{font-size:13px;color:var(--txm);margin-top:4px}
+.sum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 6px}
+.sstat{background:var(--surf2);border:1px solid var(--bdr);border-radius:11px;padding:10px 8px;text-align:center}
+.sstat .sv{font-size:24px;font-weight:800;color:var(--br7);font-family:'Fredoka One',cursive}
+.sstat .sl{font-size:11px;color:var(--txm);font-weight:700;margin-top:2px}
+.stitle{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--br6);margin:14px 0 6px;padding-left:2px}
+.stable{width:100%;border-collapse:collapse;font-size:13px}
+.stable th{text-align:left;padding:6px 8px;font-size:10px;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--txm);border-bottom:1px solid var(--bdr)}
+.stable td{padding:7px 8px;border-bottom:1px solid var(--bdr);vertical-align:top;line-height:1.4}
+.stable tr:last-child td{border-bottom:none}
+.tok{display:inline-block;background:var(--ok1);color:var(--ok7);border-radius:99px;
+  padding:2px 9px;font-size:11px;font-weight:800;border:1px solid var(--ok2)}
+.tno{display:inline-block;background:var(--no1);color:var(--no7);border-radius:99px;
+  padding:2px 9px;font-size:11px;font-weight:800;border:1px solid var(--no2)}
+
+/* MAPA CONCEPTUAL */
+.map-section{padding:0 24px 28px}
+.map-section-title{font-family:'Fredoka One',cursive;font-size:18px;color:var(--br7);
+  margin-bottom:14px;text-align:center;padding-top:8px}
+.map-scroll{overflow-x:auto;border-radius:14px;border:1px solid var(--bdr);background:var(--surf2)}
+.map-scroll svg{display:block;margin:0 auto}
+.tt{position:fixed;background:var(--surf);border:1px solid var(--bdr);border-radius:11px;
+  padding:9px 13px;font-size:12.5px;line-height:1.55;max-width:230px;pointer-events:none;
+  opacity:0;transition:opacity .15s;z-index:99;box-shadow:0 4px 16px rgba(0,0,0,.11);
+  font-family:'Nunito',sans-serif;color:var(--tx)}
+.tt.on{opacity:1}
+.tt b{color:var(--br7)}
+
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--br2);border-radius:99px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-title">🏕️ La Aventura de <span>Joaquín</span></div>
+  <div class="score-pill">⭐ <span id="hstars">☆☆☆☆☆</span>&nbsp;<span id="hcount" style="color:var(--br7)">0/0</span></div>
+</div>
+
+<div class="card">
+
+<!-- ═══ S0 INTRO ═══ -->
+<div class="scene active" id="s0">
+  <div class="prog-area"><span class="ch-tag">Capítulo 1 — Perdido</span><div class="bar-wrap"><div class="bar-fill" style="width:4%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">🌲</div>
+    <div class="crow"><div class="av av-n">📖</div><div class="bub"><div class="bub-name">Narrador</div>
+      <p><strong>Joaquín</strong> tiene 10 años y ama explorar el bosque detrás de la finca de sus abuelos. Un sábado por la tarde se internó más de lo normal siguiendo un venado. Cuando quiso volver... ya no reconocía el camino. El sol bajaba rápido y el bosque empezaba a oscurecerse.</p></div></div>
+    <div class="crow"><div class="av av-j">🧒</div><div class="bub"><div class="bub-name">Joaquín</div>
+      <p>¡No puede ser! ¿Por dónde vine? Necesito calmarme y pensar. Abuelo siempre dice que el pánico es el peor enemigo en el bosque... 😰</p></div></div>
+    <div class="ib ib-br"><div class="ib-title">🧠 Regla de Oro de la Supervivencia</div>
+      <p>Lo primero en una situación de emergencia es <strong>STOP</strong>: <strong>S</strong>top (para), <strong>T</strong>hink (piensa), <strong>O</strong>bserve (observa), <strong>P</strong>lan (planifica). El pánico gasta energía y nubla el juicio. Un minuto de calma puede salvarte la vida.</p></div>
+  </div>
+  <div class="carea">
+    <div class="hint">¿Qué hace Joaquín primero?</div>
+    <button class="abtn" onclick="go('s1a')"><span class="lbl">A</span> Calmarse, subir a un árbol y orientarse</button>
+    <button class="abtn" onclick="go('s1b')"><span class="lbl">B</span> Correr en una dirección al azar para salir rápido</button>
+  </div>
+</div>
+
+<!-- ═══ S1B DESVÍO ═══ -->
+<div class="scene" id="s1b">
+  <div class="prog-area"><span class="ch-tag">Capítulo 1 — Desvío</span><div class="bar-wrap"><div class="bar-fill" style="width:8%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">😰</div>
+    <div class="crow"><div class="av av-n">📖</div><div class="bub"><div class="bub-name">Narrador</div>
+      <p>Joaquín corrió durante 20 minutos sin rumbo. Cuando paró, estaba sudado, sin aliento y aún más perdido que antes. Además había gastado energía valiosa.</p></div></div>
+    <div class="crow"><div class="av av-j">🧒</div><div class="bub"><div class="bub-name">Joaquín</div>
+      <p>Abuelo tenía razón... correr sin pensar solo empeoró las cosas. Necesito aplicar el método STOP ahora mismo.</p></div></div>
+    <div class="ib ib-rd"><div class="ib-title">⚠️ El error del pánico</div>
+      <p>Correr sin dirección en el bosque es uno de los errores más peligrosos. Aumenta el riesgo de caídas, gasta las reservas de energía y lleva más lejos del punto de partida donde los rescatistas buscarían.</p></div>
+  </div>
+  <div class="carea"><button class="abtn retry-btn" onclick="go('s1a')"><span class="lbl">→</span> Joaquín aplica el método STOP</button></div>
+</div>
+
+<!-- ═══ S1A ORIENTACIÓN ═══ -->
+<div class="scene" id="s1a">
+  <div class="prog-area"><span class="ch-tag">Capítulo 1 — Orientación</span><div class="bar-wrap"><div class="bar-fill" style="width:14%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">🧭</div>
+    <div class="crow"><div class="av av-n">📖</div><div class="bub"><div class="bub-name">Narrador</div>
+      <p>Joaquín respiró profundo, aplicó el STOP y subió al árbol más alto. Desde arriba vio el río que pasa cerca de la finca de sus abuelos. Recordó lo que le enseñó su abuelo: <em>"los ríos siempre llevan a algún lugar habitado, síguelos cuesta abajo."</em></p></div></div>
+    <div class="ib ib-am"><div class="ib-title">🧭 Orientación natural sin brújula</div>
+      <p>• El <strong>sol sale por el este</strong> y se pone por el oeste.<br>
+         • El <strong>musgo</strong> crece más en el lado norte de los árboles (menos sol).<br>
+         • Las <strong>estrellas</strong>: la Estrella Polar siempre indica el norte.<br>
+         • Los <strong>ríos</strong> corren cuesta abajo hacia poblados o mares.<br>
+         • Las <strong>aves</strong> al atardecer vuelan hacia donde duermen, generalmente cerca del agua.</p></div>
+    <div class="crow"><div class="av av-j">🧒</div><div class="bub"><div class="bub-name">Joaquín</div>
+      <p>¡El río está al norte! Si lo sigo hacia abajo llegaré cerca de la finca. Pero antes de moverme debo pensar en agua, fuego y refugio... ya está oscureciendo.</p></div></div>
+  </div>
+  <div class="carea">
+    <div class="qbadge">🧠 Pregunta 1 de 15</div>
+    <div class="qq">Según la historia, ¿qué hace el método STOP en una emergencia de supervivencia?</div>
+    <button class="abtn" id="q1a" onclick="ans('q1','wrong',this,'q1fb','q1nx')"><span class="lbl">A</span> Indica que debes detenerte y esperar a que alguien te encuentre sin hacer nada</button>
+    <button class="abtn" id="q1b" onclick="ans('q1','correct',this,'q1fb','q1nx')"><span class="lbl">B</span> Ayuda a calmarse: parar, pensar, observar y planificar antes de actuar</button>
+    <button class="abtn" id="q1c" onclick="ans('q1','wrong',this,'q1fb','q1nx')"><span class="lbl">C</span> Es una señal para pedir socorro gritando fuerte</button>
+    <div class="fb" id="q1fb"></div>
+    <button class="abtn go-btn" id="q1nx" onclick="go('s1q2')"><span class="lbl">→</span> Siguiente pregunta</button>
+  </div>
+</div>
+
+<!-- ═══ S1Q2 ═══ -->
+<div class="scene" id="s1q2">
+  <div class="prog-area"><span class="ch-tag">Capítulo 1 — Orientación</span><div class="bar-wrap"><div class="bar-fill" style="width:20%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">⭐</div>
+    <div class="crow"><div class="av av-p">👴</div><div class="bub"><div class="bub-name">Voz del Abuelo (recuerdo)</div>
+      <p>Joaquín recordó la voz de su abuelo: <em>"Cuando estés perdido de noche, busca la Osa Mayor: son 7 estrellas en forma de cacerola. Las dos del frente apuntan directo a la Estrella Polar, que siempre está al norte exacto."</em></p></div></div>
+    <div class="ib ib-sk"><div class="ib-title">⭐ Cómo encontrar el Norte con las estrellas</div>
+      <p>La <strong>Estrella Polar</strong> (Polaris) siempre está sobre el Polo Norte. Para encontrarla: busca la <strong>Osa Mayor</strong> (7 estrellas en forma de cacerola), traza una línea por las dos estrellas del extremo del "cucharón" y extiéndela unas 5 veces: ahí está Polaris. En el hemisferio sur se usa la <strong>Cruz del Sur</strong>.</p></div>
+    <div class="ib ib-am"><div class="ib-title">🌲 Pistas naturales de orientación</div>
+      <p>El <strong>musgo</strong> tiende a crecer más grueso en el lado norte de los troncos donde hay menos sol directo. Los anillos de los troncos cortados son más anchos hacia el sur (más luz solar). Estas pistas no son infalibles pero orientan cuando no hay brújula ni sol.</p></div>
+  </div>
+  <div class="carea">
+    <div class="qbadge">🧠 Pregunta 2 de 15</div>
+    <div class="qq">¿Cómo se puede encontrar el norte usando la Osa Mayor?</div>
+    <button class="abtn" id="q2a" onclick="ans('q2','wrong',this,'q2fb','q2nx')"><span class="lbl">A</span> La estrella más brillante de la Osa Mayor siempre apunta al norte</button>
+    <button class="abtn" id="q2b" onclick="ans('q2','correct',this,'q2fb','q2nx')"><span class="lbl">B</span> Las dos estrellas del extremo del "cucharón" apuntan hacia la Estrella Polar</button>
+    <button class="abtn" id="q2c" onclick="ans('q2','wrong',this,'q2fb','q2nx')"><span class="lbl">C</span> La dirección donde sale la Osa Mayor es el norte</button>
+    <div class="fb" id="q2fb"></div>
+    <button class="abtn go-btn" id="q2nx" onclick="go('s2')"><span class="lbl">→</span> Continuar la historia</button>
+  </div>
+</div>
+
+<!-- ═══ S2 AGUA ═══ -->
+<div class="scene" id="s2">
+  <div class="prog-area"><span class="ch-tag">Capítulo 2 — El Agua</span><div class="bar-wrap"><div class="bar-fill" style="width:26%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">💧</div>
+    <div class="crow"><div class="av av-n">📖</div><div class="bub"><div class="bub-name">Narrador</div>
+      <p>Joaquín encontró el río. El agua se veía cristalina pero recordó lo que aprendió en el colegio: el agua limpia por fuera no siempre es segura. Tenía mucha sed después de tanto caminar.</p></div></div>
+    <div class="ib ib-sk"><div class="ib-title">💧 El agua: regla de las 3 horas y 3 días</div>
+      <p>Un humano puede sobrevivir <strong>3 minutos</strong> sin aire, <strong>3 horas</strong> en clima extremo sin refugio, <strong>3 días</strong> sin agua y <strong>3 semanas</strong> sin comida. El agua es la segunda prioridad de supervivencia. Sin ella, el cuerpo empieza a fallar en menos de 72 horas.</p></div>
+    <div class="ib ib-br"><div class="ib-title">🔥 Cómo purificar agua en la naturaleza</div>
+      <p><strong>Hervir:</strong> el método más seguro. 1 minuto de hervor elimina bacterias y parásitos.<br>
+         <strong>Filtrar:</strong> pasar el agua por capas de arena fina, carbón vegetal y tela elimina partículas sólidas.<br>
+         <strong>Luz solar:</strong> dejar agua en botella plástica transparente al sol 6+ horas mata muchos microorganismos.<br>
+         <strong>Nunca:</strong> tomar agua estancada sin purificar.</p></div>
+  </div>
+  <div class="carea">
+    <div class="hint">El agua del río se ve limpia. ¿Qué hace Joaquín?</div>
+    <button class="abtn" onclick="go('s2a')"><span class="lbl">A</span> Hervir el agua antes de tomarla</button>
+    <button class="abtn" onclick="go('s2b')"><span class="lbl">B</span> Tomar directo del río porque se ve cristalina</button>
+  </div>
+</div>
+
+<!-- ═══ S2B DESVÍO ═══ -->
+<div class="scene" id="s2b">
+  <div class="prog-area"><span class="ch-tag">Capítulo 2 — Desvío</span><div class="bar-wrap"><div class="bar-fill" style="width:24%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">🤢</div>
+    <div class="crow"><div class="av av-n">📖</div><div class="bub"><div class="bub-name">Narrador</div>
+      <p>Joaquín tomó el agua sin hervir. Horas después su estómago protestó fuertemente. El agua clara puede contener bacterias, parásitos y virus invisibles al ojo humano que causan enfermedades graves.</p></div></div>
+    <div class="ib ib-rd"><div class="ib-title">⚠️ Agua clara ≠ agua segura</div>
+      <p>El agua de ríos y quebradas puede contener <em>Giardia</em>, <em>E. coli</em> y otros microorganismos dañinos aunque se vea perfectamente limpia. Enfermarse en el bosque multiplica el peligro enormemente.</p></div>
+  </div>
+  <div class="carea"><button class="abtn retry-btn" onclick="go('s2a')"><span class="lbl">→</span> Joaquín decide hervir el agua primero</button></div>
+</div>
+
+<!-- ═══ S2A FUEGO ═══ -->
+<div class="scene" id="s2a">
+  <div class="prog-area"><span class="ch-tag">Capítulo 2 — El Fuego</span><div class="bar-wrap"><div class="bar-fill" style="width:32%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">🔥</div>
+    <div class="crow"><div class="av av-n">📖</div><div class="bub"><div class="bub-name">Narrador</div>
+      <p>¡Joaquín necesitaba hacer fuego para hervir el agua y también para calentarse! Buscó en sus bolsillos: solo tenía una lupa pequeña que siempre cargaba. El sol aún daba algo de luz.</p></div></div>
+    <div class="ib ib-am"><div class="ib-title">🔥 Las 3 cosas que necesita el fuego</div>
+      <p>Todo fuego necesita un <strong>triángulo del fuego</strong>:<br>
+         <strong>1. Combustible:</strong> yesca seca (pasto, hojas, corteza seca, pelusa).<br>
+         <strong>2. Calor:</strong> chispa o llama inicial (fósforo, lupa con sol, fricción de madera).<br>
+         <strong>3. Oxígeno:</strong> soplar suave y constante al inicio. Si falta uno de los tres, el fuego no enciende.</p></div>
+    <div class="ib ib-br"><div class="ib-title">🌿 Pasos para hacer fuego con lupa</div>
+      <p>Recolecta <strong>yesca muy seca</strong> (pasto, corteza desmenuzada). Enfoca el rayo de sol con la lupa en un punto hasta que humee. Sopla <strong>suave y continuo</strong> hasta que aparezca llama. Agrega palitos pequeños primero, luego ramas más grandes. Nunca hagas fuego bajo ramas ni cerca de material seco que no controles.</p></div>
+  </div>
+  <div class="carea">
+    <div class="qbadge">🧠 Pregunta 3 de 15</div>
+    <div class="qq">¿Por qué Joaquín no debe tomar el agua del río aunque se vea cristalina?</div>
+    <button class="abtn" id="q3a" onclick="ans('q3','wrong',this,'q3fb','q3nx')"><span class="lbl">A</span> Porque el agua fría puede darle dolor de garganta</button>
+    <button class="abtn" id="q3b" onclick="ans('q3','correct',this,'q3fb','q3nx')"><span class="lbl">B</span> Porque puede contener bacterias y parásitos invisibles que causan enfermedades</button>
+    <button class="abtn" id="q3c" onclick="ans('q3','wrong',this,'q3fb','q3nx')"><span class="lbl">C</span> Porque el agua de río siempre tiene mal sabor</button>
+    <div class="fb" id="q3fb"></div>
+    <button class="abtn go-btn" id="q3nx" onclick="go('s2q4')"><span class="lbl">→</span> Siguiente pregunta</button>
+  </div>
+</div>
+
+<!-- ═══ S2Q4 ═══ -->
+<div class="scene" id="s2q4">
+  <div class="prog-area"><span class="ch-tag">Capítulo 2 — El Fuego</span><div class="bar-wrap"><div class="bar-fill" style="width:37%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">🪵</div>
+    <div class="crow"><div class="av av-j">🧒</div><div class="bub"><div class="bub-name">Joaquín</div>
+      <p>Logré encender el fuego con la lupa y herví el agua. Ahora la temperatura está bajando mucho. Necesito construir un refugio antes de que se haga de noche completamente.</p></div></div>
+    <div class="ib ib-am"><div class="ib-title">🛖 Por qué el refugio es la primera prioridad</div>
+      <p>La <strong>hipotermia</strong> (bajada peligrosa de la temperatura del cuerpo) puede matar en pocas horas si la temperatura baja y el cuerpo está mojado o sin abrigo. Por eso en supervivencia el refugio va ANTES que la comida. Un cuerpo que pierde calor rápidamente no puede pensar con claridad.</p></div>
+    <div class="ib ib-sk"><div class="ib-title">🌡️ La hipotermia</div>
+      <p>Ocurre cuando la temperatura corporal baja de <strong>35°C</strong>. Señales tempranas: temblores, torpeza, confusión. El viento y la humedad aceleran la pérdida de calor hasta <strong>25 veces más</strong> que el aire seco. Mantenerse seco es más importante que mantenerse abrigado.</p></div>
+  </div>
+  <div class="carea">
+    <div class="qbadge">🧠 Pregunta 4 de 15</div>
+    <div class="qq">¿Cuáles son los tres elementos del "triángulo del fuego"?</div>
+    <button class="abtn" id="q4a" onclick="ans('q4','correct',this,'q4fb','q4nx')"><span class="lbl">A</span> Combustible, calor y oxígeno</button>
+    <button class="abtn" id="q4b" onclick="ans('q4','wrong',this,'q4fb','q4nx')"><span class="lbl">B</span> Madera, agua y piedra</button>
+    <button class="abtn" id="q4c" onclick="ans('q4','wrong',this,'q4fb','q4nx')"><span class="lbl">C</span> Chispa, humo y ceniza</button>
+    <div class="fb" id="q4fb"></div>
+    <button class="abtn go-btn" id="q4nx" onclick="go('s3')"><span class="lbl">→</span> Continuar la historia</button>
+  </div>
+</div>
+
+<!-- ═══ S3 REFUGIO ═══ -->
+<div class="scene" id="s3">
+  <div class="prog-area"><span class="ch-tag">Capítulo 3 — El Refugio</span><div class="bar-wrap"><div class="bar-fill" style="width:43%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">🛖</div>
+    <div class="crow"><div class="av av-n">📖</div><div class="bub"><div class="bub-name">Narrador</div>
+      <p>Joaquín buscó un lugar para construir su refugio de emergencia. Encontró un árbol caído grande que podría usar como pared natural. Recordó que debe construirlo <strong>pequeño</strong>, así el calor de su cuerpo lo calienta más rápido.</p></div></div>
+    <div class="ib ib-mo"><div class="ib-title">🛖 Cómo construir un refugio de emergencia</div>
+      <p><strong>Lean-to (cobertizo simple):</strong> apoya ramas largas en ángulo contra el tronco caído. Cubre con ramas, hojas grandes y pasto. Mientras más capas, más aislamiento.<br>
+         <strong>Reglas clave:</strong><br>
+         • Construirlo pequeño (solo para tu cuerpo) para conservar calor.<br>
+         • Ubicarlo lejos de ríos (crecidas), sin ramas muertas arriba (pueden caer).<br>
+         • Poner hojas secas en el suelo: el suelo frío roba más calor que el aire.</p></div>
+    <div class="crow"><div class="av av-j">🧒</div><div class="bub"><div class="bub-name">Joaquín</div>
+      <p>Apilé hojas y pasto seco en el suelo para aislarme del frío de la tierra. Abuelo decía que el suelo roba el calor del cuerpo más rápido que el viento. ¡Esta noche lo confirmaré!</p></div></div>
+  </div>
+  <div class="carea">
+    <div class="qbadge">🧠 Pregunta 5 de 15</div>
+    <div class="qq">¿Por qué hay que construir el refugio de emergencia pequeño?</div>
+    <button class="abtn" id="q5a" onclick="ans('q5','wrong',this,'q5fb','q5nx')"><span class="lbl">A</span> Porque si es grande los animales pueden entrar más fácil</button>
+    <button class="abtn" id="q5b" onclick="ans('q5','correct',this,'q5fb','q5nx')"><span class="lbl">B</span> Porque un refugio pequeño se calienta más rápido con el calor del propio cuerpo</button>
+    <button class="abtn" id="q5c" onclick="ans('q5','wrong',this,'q5fb','q5nx')"><span class="lbl">C</span> Para que sea más fácil y rápido de construir con pocos materiales</button>
+    <div class="fb" id="q5fb"></div>
+    <button class="abtn go-btn" id="q5nx" onclick="go('s3q6')"><span class="lbl">→</span> Siguiente pregunta</button>
+  </div>
+</div>
+
+<!-- ═══ S3Q6 ═══ -->
+<div class="scene" id="s3q6">
+  <div class="prog-area"><span class="ch-tag">Capítulo 3 — El Refugio</span><div class="bar-wrap"><div class="bar-fill" style="width:49%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">🌡️</div>
+    <div class="crow"><div class="av av-n">📖</div><div class="bub"><div class="bub-name">Narrador</div>
+      <p>Esa noche Joaquín durmió en su refugio. A pesar del frío, sobrevivió bien gracias al aislamiento del suelo y al fuego que mantuvo encendido cerca. Al amanecer analizó cómo conservar su energía para el día siguiente.</p></div></div>
+    <div class="ib ib-br"><div class="ib-title">⚡ Gestión de energía en supervivencia</div>
+      <p>El cuerpo humano tiene reservas de energía limitadas. En supervivencia, cada movimiento debe ser deliberado:<br>
+         • <strong>Descansar</strong> cuando no hay tarea urgente.<br>
+         • <strong>No comer nieve</strong>: derrite energía del cuerpo para calentarla.<br>
+         • <strong>Moverse despacio</strong> para no sudar (la ropa mojada enfría).<br>
+         • Prioridad: <strong>agua antes que comida</strong> siempre.</p></div>
+    <div class="ib ib-am"><div class="ib-title">🔥 Mantener el fuego toda la noche</div>
+      <p>Para mantener el fuego encendido de noche, agrega <strong>troncos gruesos</strong> que arden despacio. El fuego cumple tres funciones vitales: calor, purificar agua y <strong>señal de rescate</strong> (el humo es visible desde lejos durante el día).</p></div>
+  </div>
+  <div class="carea">
+    <div class="qbadge">🧠 Pregunta 6 de 15</div>
+    <div class="qq">¿Por qué Joaquín puso hojas y pasto seco en el suelo de su refugio?</div>
+    <button class="abtn" id="q6a" onclick="ans('q6','wrong',this,'q6fb','q6nx')"><span class="lbl">A</span> Para hacerlo más cómodo y suave para dormir</button>
+    <button class="abtn" id="q6b" onclick="ans('q6','wrong',this,'q6fb','q6nx')"><span class="lbl">B</span> Para que los insectos no puedan entrar al refugio</button>
+    <button class="abtn" id="q6c" onclick="ans('q6','correct',this,'q6fb','q6nx')"><span class="lbl">C</span> Para aislarse del frío del suelo, que roba el calor del cuerpo</button>
+    <div class="fb" id="q6fb"></div>
+    <button class="abtn go-btn" id="q6nx" onclick="go('s4')"><span class="lbl">→</span> Continuar la historia</button>
+  </div>
+</div>
+
+<!-- ═══ S4 COMIDA Y PLANTAS ═══ -->
+<div class="scene" id="s4">
+  <div class="prog-area"><span class="ch-tag">Capítulo 4 — Comida y Plantas</span><div class="bar-wrap"><div class="bar-fill" style="width:55%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">🍄</div>
+    <div class="crow"><div class="av av-n">📖</div><div class="bub"><div class="bub-name">Narrador</div>
+      <p>Al segundo día, el estómago de Joaquín protestaba. Vio frutos coloridos en unos arbustos y hongos en los troncos. Antes de tocar cualquier cosa, recordó la regla que le enseñó su abuela sobre las plantas.</p></div></div>
+    <div class="crow"><div class="av av-p">👵</div><div class="bub"><div class="bub-name">Voz de la Abuela (recuerdo)</div>
+      <p><em>"Joaquín, en el bosque: si no lo conoces con certeza, NO te lo metas a la boca. Muchas plantas venenosas imitan a las comestibles. Y los hongos son los más traicioneros: pueden verse iguales y ser mortales."</em></p></div></div>
+    <div class="ib ib-mo"><div class="ib-title">🌿 Reglas para identificar alimentos silvestres</div>
+      <p><strong>Evitar siempre:</strong> hongos (a menos de conocerlos perfectamente), bayas de colores brillantes (rojo, blanco, negro), plantas con olor almendrado (cianuro), plantas con jugo lechoso blanco.<br>
+         <strong>Más seguro para comenzar:</strong> pinos (semillas, brotes jóvenes), dientes de león (hojas y flores), insectos (grillos, hormigas) son ricos en proteína en situaciones extremas.</p></div>
+    <div class="ib ib-br"><div class="ib-title">🐟 Proteínas seguras en el bosque</div>
+      <p>Los <strong>peces</strong> son una fuente segura si el río está limpio. Se pueden atrapar con una lanza improvisada, trampas de ramas o con anzuelo hecho de espinas. Los <strong>insectos</strong> como grillos y larvas blancas contienen hasta el doble de proteína por gramo que la carne de res, y son seguros si se cocinan bien.</p></div>
+  </div>
+  <div class="carea">
+    <div class="qbadge">🧠 Pregunta 7 de 15</div>
+    <div class="qq">¿Por qué la abuela le advierte a Joaquín que nunca coma hongos que no conoce?</div>
+    <button class="abtn" id="q7a" onclick="ans('q7','correct',this,'q7fb','q7nx')"><span class="lbl">A</span> Porque los hongos venenosos pueden verse iguales a los comestibles y causar la muerte</button>
+    <button class="abtn" id="q7b" onclick="ans('q7','wrong',this,'q7fb','q7nx')"><span class="lbl">B</span> Porque todos los hongos del bosque tienen mal sabor</button>
+    <button class="abtn" id="q7c" onclick="ans('q7','wrong',this,'q7fb','q7nx')"><span class="lbl">C</span> Porque los hongos solo se comen cocinados en casa con sal</button>
+    <div class="fb" id="q7fb"></div>
+    <button class="abtn go-btn" id="q7nx" onclick="go('s4q8')"><span class="lbl">→</span> Siguiente pregunta</button>
+  </div>
+</div>
+
+<!-- ═══ S4Q8 ═══ -->
+<div class="scene" id="s4q8">
+  <div class="prog-area"><span class="ch-tag">Capítulo 4 — Comida y Plantas</span><div class="bar-wrap"><div class="bar-fill" style="width:61%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">🐟</div>
+    <div class="crow"><div class="av av-j">🧒</div><div class="bub"><div class="bub-name">Joaquín</div>
+      <p>Decidí no tocar los hongos. Con una rama afilada con piedra hice una lanza simple y logré pescar dos truchas pequeñas en el río. Las cociné bien en el fuego. ¡Nunca algo me supo tan rico!</p></div></div>
+    <div class="ib ib-am"><div class="ib-title">🎣 Técnicas básicas de pesca de supervivencia</div>
+      <p><strong>Lanza:</strong> afila una rama en punta con una piedra. Espera inmóvil en la orilla donde el río sea poco profundo y haya sombra (los peces se refugian en la sombra).<br>
+         <strong>Trampa:</strong> construye un embudo de ramas en la orilla: ancho por fuera, angosto adentro. Los peces entran pero no salen.<br>
+         <strong>Siempre cocina</strong> el pescado: los parásitos del río mueren con el calor.</p></div>
+  </div>
+  <div class="carea">
+    <div class="qbadge">🧠 Pregunta 8 de 15</div>
+    <div class="qq">¿Qué tipo de alimento describe la historia como "más seguro para empezar" en la naturaleza?</div>
+    <button class="abtn" id="q8a" onclick="ans('q8','wrong',this,'q8fb','q8nx')"><span class="lbl">A</span> Bayas de colores brillantes como rojas y blancas</button>
+    <button class="abtn" id="q8b" onclick="ans('q8','wrong',this,'q8fb','q8nx')"><span class="lbl">B</span> Hongos blancos porque son los menos tóxicos</button>
+    <button class="abtn" id="q8c" onclick="ans('q8','correct',this,'q8fb','q8nx')"><span class="lbl">C</span> Peces del río y plantas como pinos y dientes de león bien identificadas</button>
+    <div class="fb" id="q8fb"></div>
+    <button class="abtn go-btn" id="q8nx" onclick="go('s5')"><span class="lbl">→</span> Continuar la historia</button>
+  </div>
+</div>
+
+<!-- ═══ S5 SEÑALES DE RESCATE ═══ -->
+<div class="scene" id="s5">
+  <div class="prog-area"><span class="ch-tag">Capítulo 5 — Señales de Rescate</span><div class="bar-wrap"><div class="bar-fill" style="width:67%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">✈️</div>
+    <div class="crow"><div class="av av-n">📖</div><div class="bub"><div class="bub-name">Narrador</div>
+      <p>Al tercer día, Joaquín escuchó a lo lejos el sonido de un helicóptero. Sabía que su familia debía estar buscándolo. Tenía poco tiempo para hacerse visible. El bosque era denso y desde el aire era casi invisible.</p></div></div>
+    <div class="ib ib-sk"><div class="ib-title">📡 Señales de rescate que funcionan</div>
+      <p><strong>Fuego y humo:</strong> de día, el humo blanco (agrega ramas verdes al fuego) es muy visible. De noche, las llamas brillantes son la mejor señal.<br>
+         <strong>Espejo o superficie reflectante:</strong> un destello de luz puede verse hasta <strong>16 km</strong> en condiciones claras.<br>
+         <strong>Señal en tierra:</strong> arma una X o SOS grande con ramas o piedras en un claro abierto. Debe medir al menos 3 metros para ser visto desde el aire.<br>
+         <strong>Tres señales</strong> (tres gritos, tres fogatas, tres disparos) es el código universal de socorro.</p></div>
+    <div class="crow"><div class="av av-j">🧒</div><div class="bub"><div class="bub-name">Joaquín</div>
+      <p>¡Rápido! Eché ramas verdes al fuego para hacer humo blanco y arrastré piedras grandes formando una X en el claro. ¡El helicóptero empezó a girar hacia mí!</p></div></div>
+  </div>
+  <div class="carea">
+    <div class="qbadge">🧠 Pregunta 9 de 15</div>
+    <div class="qq">¿Por qué Joaquín echa ramas verdes al fuego cuando ve el helicóptero?</div>
+    <button class="abtn" id="q9a" onclick="ans('q9','correct',this,'q9fb','q9nx')"><span class="lbl">A</span> Para producir humo blanco visible desde el aire como señal de rescate</button>
+    <button class="abtn" id="q9b" onclick="ans('q9','wrong',this,'q9fb','q9nx')"><span class="lbl">B</span> Para que el fuego dure más tiempo durante la noche</button>
+    <button class="abtn" id="q9c" onclick="ans('q9','wrong',this,'q9fb','q9nx')"><span class="lbl">C</span> Para purificar el agua más rápido con más calor</button>
+    <div class="fb" id="q9fb"></div>
+    <button class="abtn go-btn" id="q9nx" onclick="go('s5q10')"><span class="lbl">→</span> Siguiente pregunta</button>
+  </div>
+</div>
+
+<!-- ═══ S5Q10 ═══ -->
+<div class="scene" id="s5q10">
+  <div class="prog-area"><span class="ch-tag">Capítulo 5 — Señales de Rescate</span><div class="bar-wrap"><div class="bar-fill" style="width:72%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">🆘</div>
+    <div class="crow"><div class="av av-r">🚁</div><div class="bub"><div class="bub-name">Rescatista (por radio)</div>
+      <p>— ¡Avistamos la señal! Detectamos una X de piedras en el claro y humo. ¡Ubicación confirmada! Estamos a 4 minutos de tu posición, Joaquín. ¡Quédate donde estás!</p></div></div>
+    <div class="ib ib-sk"><div class="ib-title">📋 El código universal de socorro</div>
+      <p>En supervivencia, el número <strong>3</strong> siempre significa "necesito ayuda":<br>
+         • <strong>3 gritos</strong> fuertes con pausa entre ellos.<br>
+         • <strong>3 fogatas</strong> en triángulo separadas por 30 metros.<br>
+         • <strong>3 disparos</strong> al aire (si se tiene arma).<br>
+         • <strong>3 destellos</strong> de espejo o linterna.<br>
+         Cualquier grupo de rescate en el mundo reconoce esta señal.</p></div>
+    <div class="ib ib-mo"><div class="ib-title">🗺️ Importancia de no alejarse del último punto conocido</div>
+      <p>Los equipos de rescate siempre empiezan a buscar desde el <strong>último punto conocido</strong> de la persona (donde fue vista por última vez). Alejarse reduce enormemente las posibilidades de ser encontrado. Si no estás en peligro inmediato, <strong>quédate y hazte notar</strong>.</p></div>
+  </div>
+  <div class="carea">
+    <div class="qbadge">🧠 Pregunta 10 de 15</div>
+    <div class="qq">¿Qué significa el código universal de socorro basado en el número 3?</div>
+    <button class="abtn" id="q10a" onclick="ans('q10','wrong',this,'q10fb','q10nx')"><span class="lbl">A</span> Que hay 3 personas perdidas en el mismo lugar</button>
+    <button class="abtn" id="q10b" onclick="ans('q10','correct',this,'q10fb','q10nx')"><span class="lbl">B</span> Tres señales (gritos, destellos o fogatas) indican que alguien necesita ayuda</button>
+    <button class="abtn" id="q10c" onclick="ans('q10','wrong',this,'q10fb','q10nx')"><span class="lbl">C</span> Que tienes provisiones para 3 días y no necesitas rescate urgente</button>
+    <div class="fb" id="q10fb"></div>
+    <button class="abtn go-btn" id="q10nx" onclick="go('s6')"><span class="lbl">→</span> Continuar la historia</button>
+  </div>
+</div>
+
+<!-- ═══ S6 PRIMEROS AUXILIOS ═══ -->
+<div class="scene" id="s6">
+  <div class="prog-area"><span class="ch-tag">Capítulo 6 — Primeros Auxilios</span><div class="bar-wrap"><div class="bar-fill" style="width:78%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">🩹</div>
+    <div class="crow"><div class="av av-n">📖</div><div class="bub"><div class="bub-name">Narrador</div>
+      <p>Mientras esperaba el rescate, Joaquín notó que tenía un corte en la pierna de cuando tropezó el primer día. No era grave, pero recordó lo que aprendió en el taller de primeros auxilios del colegio.</p></div></div>
+    <div class="ib ib-rd"><div class="ib-title">🩹 Heridas en el campo: pasos básicos</div>
+      <p><strong>1. Limpiar:</strong> enjuagar con agua hervida (nunca agua sin purificar). La tierra en una herida puede causar infecciones graves.<br>
+         <strong>2. Presionar:</strong> aplicar presión directa con tela limpia durante 10 minutos para parar el sangrado.<br>
+         <strong>3. Cubrir:</strong> tapar con tela lo más limpia posible para evitar insectos y suciedad.<br>
+         <strong>4. Nunca:</strong> cerrar heridas profundas ni usar musgo ni barro (contienen bacterias).</p></div>
+    <div class="crow"><div class="av av-j">🧒</div><div class="bub"><div class="bub-name">Joaquín</div>
+      <p>Limpié el corte con el agua hervida que me quedaba y lo cubrí con mi camiseta desgarrada. También tuve cuidado de no mover la pierna de más para que el sangrado no se reactivara.</p></div></div>
+    <div class="ib ib-am"><div class="ib-title">🐍 Mordeduras y picaduras en el bosque</div>
+      <p>Si una serpiente muerde: <strong>no succiones el veneno</strong> (es un mito peligroso), <strong>no hagas torniquete</strong>, inmoviliza la extremidad por debajo del nivel del corazón y busca ayuda médica inmediatamente. La mayoría de serpientes no atacan si no se les molesta: observa bien el suelo donde pisas.</p></div>
+  </div>
+  <div class="carea">
+    <div class="qbadge">🧠 Pregunta 11 de 15</div>
+    <div class="qq">¿Cuál es el primer paso para tratar una herida en el campo según la historia?</div>
+    <button class="abtn" id="q11a" onclick="ans('q11','wrong',this,'q11fb','q11nx')"><span class="lbl">A</span> Cubrirla con barro o musgo para que no entre aire</button>
+    <button class="abtn" id="q11b" onclick="ans('q11','correct',this,'q11fb','q11nx')"><span class="lbl">B</span> Limpiarla con agua hervida para evitar infecciones</button>
+    <button class="abtn" id="q11c" onclick="ans('q11','wrong',this,'q11fb','q11nx')"><span class="lbl">C</span> Dejarla abierta al aire para que se seque sola</button>
+    <div class="fb" id="q11fb"></div>
+    <button class="abtn go-btn" id="q11nx" onclick="go('s6q12')"><span class="lbl">→</span> Siguiente pregunta</button>
+  </div>
+</div>
+
+<!-- ═══ S6Q12 ═══ -->
+<div class="scene" id="s6q12">
+  <div class="prog-area"><span class="ch-tag">Capítulo 6 — Primeros Auxilios</span><div class="bar-wrap"><div class="bar-fill" style="width:83%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">🐍</div>
+    <div class="crow"><div class="av av-n">📖</div><div class="bub"><div class="bub-name">Narrador</div>
+      <p>Mientras esperaba, Joaquín también recordó los peligros del bosque que su abuelo le había contado: serpientes, plantas urticantes, avispas. La clave siempre era la misma: respeto, observación y no tocar lo que no se conoce.</p></div></div>
+    <div class="ib ib-rd"><div class="ib-title">🚨 Mitos peligrosos sobre las serpientes</div>
+      <p>Tres cosas que <strong>nunca</strong> debes hacer si una serpiente te muerde:<br>
+         <strong>1.</strong> Succionar el veneno con la boca (lo absorbes tú).<br>
+         <strong>2.</strong> Hacer un torniquete (corta la circulación y puede causar gangrena).<br>
+         <strong>3.</strong> Correr (acelera la circulación y distribuye el veneno más rápido).<br>
+         Lo correcto: <strong>calma, inmovilizar, buscar hospital.</strong></p></div>
+  </div>
+  <div class="carea">
+    <div class="qbadge">🧠 Pregunta 12 de 15</div>
+    <div class="qq">¿Qué NO debes hacer si una serpiente venenosa te muerde?</div>
+    <button class="abtn" id="q12a" onclick="ans('q12','wrong',this,'q12fb','q12nx')"><span class="lbl">A</span> Inmovilizar la extremidad y buscar ayuda médica</button>
+    <button class="abtn" id="q12b" onclick="ans('q12','correct',this,'q12fb','q12nx')"><span class="lbl">B</span> Succionar el veneno con la boca o hacer un torniquete</button>
+    <button class="abtn" id="q12c" onclick="ans('q12','wrong',this,'q12fb','q12nx')"><span class="lbl">C</span> Mantener la calma y no correr</button>
+    <div class="fb" id="q12fb"></div>
+    <button class="abtn go-btn" id="q12nx" onclick="go('s7')"><span class="lbl">→</span> ¡Capítulo final!</button>
+  </div>
+</div>
+
+<!-- ═══ S7 EL RESCATE ═══ -->
+<div class="scene" id="s7">
+  <div class="prog-area"><span class="ch-tag">Capítulo 7 — El Rescate</span><div class="bar-wrap"><div class="bar-fill" style="width:89%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">🚁</div>
+    <div class="crow"><div class="av av-n">📖</div><div class="bub"><div class="bub-name">Narrador</div>
+      <p>El helicóptero aterrizó en el claro. Su familia corrió hacia él llorando de alegría. El rescatista quedó sorprendido: Joaquín había aplicado técnicas de supervivencia perfectamente sin ningún equipo, solo con conocimiento.</p></div></div>
+    <div class="crow"><div class="av av-r">🚁</div><div class="bub"><div class="bub-name">Rescatista</div>
+      <p>Joaquín, en 20 años de trabajo nunca había visto a un niño de 10 años manejar esto tan bien. El fuego, el refugio, el agua hervida, las señales... ¿Quién te enseñó todo esto?</p></div></div>
+    <div class="crow"><div class="av av-j">🧒</div><div class="bub"><div class="bub-name">Joaquín</div>
+      <p>Mi abuelo, mi abuela... ¡y mis ganas de aprender! El conocimiento no ocupa espacio en la mochila. Es el mejor equipo de supervivencia que existe. 🏕️💪</p></div></div>
+  </div>
+  <div class="carea">
+    <div class="qbadge">🧠 Pregunta 13 de 15</div>
+    <div class="qq">¿Cuál de estas acciones de Joaquín fue más importante para que lo encontraran?</div>
+    <button class="abtn" id="q13a" onclick="ans('q13','wrong',this,'q13fb','q13nx')"><span class="lbl">A</span> Haber corrido hacia distintos lados para explorar el bosque</button>
+    <button class="abtn" id="q13b" onclick="ans('q13','correct',this,'q13fb','q13nx')"><span class="lbl">B</span> Hacer señales visibles: humo con ramas verdes y una X de piedras en el claro</button>
+    <button class="abtn" id="q13c" onclick="ans('q13','wrong',this,'q13fb','q13nx')"><span class="lbl">C</span> Gritar muy fuerte sin parar durante tres días</button>
+    <div class="fb" id="q13fb"></div>
+    <button class="abtn go-btn" id="q13nx" onclick="go('s7q14')"><span class="lbl">→</span> Siguiente pregunta</button>
+  </div>
+</div>
+
+<!-- ═══ S7Q14 ═══ -->
+<div class="scene" id="s7q14">
+  <div class="prog-area"><span class="ch-tag">Capítulo 7 — El Rescate</span><div class="bar-wrap"><div class="bar-fill" style="width:94%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">🧠</div>
+    <div class="crow"><div class="av av-p">👴</div><div class="bub"><div class="bub-name">Abuelo</div>
+      <p>Joaquín, ¡estás bien! Nos tenías locos de susto. Pero mira, aplicaste todo lo que hemos hablado. La regla de las 3 prioridades: <strong>refugio, agua y señales</strong>. El conocimiento te salvó la vida.</p></div></div>
+    <div class="ib ib-mo"><div class="ib-title">📋 Las 3 prioridades de supervivencia en orden</div>
+      <p><strong>1° Refugio:</strong> protegerse del frío, calor, lluvia y viento. La hipotermia puede matar en horas.<br>
+         <strong>2° Agua:</strong> el cuerpo aguanta 3 días sin agua. Siempre purificarla antes de beber.<br>
+         <strong>3° Señales:</strong> hacerse visible para los rescatistas. Fuego, humo, espejos, marcas en el suelo.<br>
+         La comida viene de último: puedes aguantar 3 semanas sin comer.</p></div>
+  </div>
+  <div class="carea">
+    <div class="qbadge">🧠 Pregunta 14 de 15</div>
+    <div class="qq">Según la "regla de los 3", ¿cuánto tiempo puede sobrevivir un humano sin agua?</div>
+    <button class="abtn" id="q14a" onclick="ans('q14','wrong',this,'q14fb','q14nx')"><span class="lbl">A</span> 3 semanas, igual que sin comida</button>
+    <button class="abtn" id="q14b" onclick="ans('q14','wrong',this,'q14fb','q14nx')"><span class="lbl">B</span> 3 horas, si hace mucho calor</button>
+    <button class="abtn" id="q14c" onclick="ans('q14','correct',this,'q14fb','q14nx')"><span class="lbl">C</span> 3 días, por eso el agua es la segunda prioridad tras el refugio</button>
+    <div class="fb" id="q14fb"></div>
+    <button class="abtn go-btn" id="q14nx" onclick="go('s7q15')"><span class="lbl">→</span> ¡Última pregunta!</button>
+  </div>
+</div>
+
+<!-- ═══ S7Q15 ═══ -->
+<div class="scene" id="s7q15">
+  <div class="prog-area"><span class="ch-tag">Pregunta Final</span><div class="bar-wrap"><div class="bar-fill" style="width:97%"></div></div></div>
+  <div class="sbody">
+    <div class="illus">🌟</div>
+    <div class="crow"><div class="av av-j">🧒</div><div class="bub"><div class="bub-name">Joaquín</div>
+      <p>Esa experiencia me cambió. Ahora entiendo que el bosque no es el enemigo: el enemigo es el desconocimiento. Aprendí más en esos 3 días que en meses de clases. <strong>El conocimiento de supervivencia es un regalo para toda la vida.</strong></p></div></div>
+  </div>
+  <div class="carea">
+    <div class="qbadge">🧠 Pregunta 15 de 15 — ¡La final!</div>
+    <div class="qq">¿Cuál es el mensaje principal de la aventura de Joaquín?</div>
+    <button class="abtn" id="q15a" onclick="ans('q15','wrong',this,'q15fb','q15nx')"><span class="lbl">A</span> Que el bosque es muy peligroso y nunca se debe entrar en él</button>
+    <button class="abtn" id="q15b" onclick="ans('q15','wrong',this,'q15fb','q15nx')"><span class="lbl">B</span> Que siempre hay que llevar mucho equipo caro para sobrevivir</button>
+    <button class="abtn" id="q15c" onclick="ans('q15','correct',this,'q15fb','q15nx')"><span class="lbl">C</span> Que el conocimiento y la calma son las mejores herramientas de supervivencia</button>
+    <div class="fb" id="q15fb"></div>
+    <button class="abtn go-btn" id="q15nx" onclick="go('sfinal')"><span class="lbl">🏆</span> Ver mi resultado final</button>
+  </div>
+</div>
+
+<!-- ═══ FINAL ═══ -->
+<div class="scene" id="sfinal">
+  <div class="prog-area"><span class="ch-tag">¡Aventura completada! 🎉</span><div class="bar-wrap"><div class="bar-fill" style="width:100%"></div></div></div>
+  <div class="sbody">
+    <div class="illus" style="animation:none;font-size:60px">🏆</div>
+    <div class="sum-header">
+      <div class="sum-big" id="fstars">⭐⭐⭐</div>
+      <div class="sum-msg" id="fmsg"></div>
+      <div class="sum-sub" id="fsub"></div>
+    </div>
+    <div class="sum-grid">
+      <div class="sstat"><div class="sv" id="sv-ok">0</div><div class="sl">Correctas ✓</div></div>
+      <div class="sstat"><div class="sv" id="sv-no">0</div><div class="sl">Para repasar ✗</div></div>
+      <div class="sstat"><div class="sv" id="sv-pct">0%</div><div class="sl">Puntaje</div></div>
+    </div>
+    <div class="stitle">📋 Detalle pregunta por pregunta</div>
+    <table class="stable">
+      <thead><tr><th style="width:36px">#</th><th>Tema evaluado</th><th style="width:96px;text-align:center">Resultado</th></tr></thead>
+      <tbody id="stbody"></tbody>
+    </table>
+    <div id="repaso-block" style="display:none">
+      <div class="stitle">📖 Temas para repasar</div>
+      <div class="ib ib-am" id="repaso-list"></div>
+    </div>
+    <div class="ib ib-mo" style="margin-top:10px">
+      <div class="ib-title">✅ Lo que aprendiste con Joaquín</div>
+      <p>✦ El método <strong>STOP</strong> evita el pánico y salva vidas.<br>
+         ✦ Orientarte con el <strong>sol, estrellas y ríos</strong> sin brújula.<br>
+         ✦ Siempre <strong>purifica el agua</strong> antes de beberla.<br>
+         ✦ El <strong>triángulo del fuego</strong>: combustible, calor y oxígeno.<br>
+         ✦ El refugio <strong>pequeño</strong> conserva mejor el calor del cuerpo.<br>
+         ✦ <strong>Nunca comas</strong> hongos ni plantas desconocidas.<br>
+         ✦ Tres señales = código universal de <strong>socorro</strong>.<br>
+         ✦ El <strong>conocimiento</strong> es el mejor equipo de supervivencia.</p>
+    </div>
+  </div>
+
+  <!-- MAPA CONCEPTUAL -->
+  <div class="map-section">
+    <div class="map-section-title">🗺️ Mapa Conceptual — Supervivencia en la Naturaleza</div>
+    <div class="map-scroll">
+      <svg id="mapa" xmlns="http://www.w3.org/2000/svg" width="1040" height="1020" viewBox="0 0 1040 1020"></svg>
+    </div>
+  </div>
+
+  <div class="carea" style="padding-top:0">
+    <button class="abtn replay-btn" onclick="resetGame()"><span class="lbl">🔄</span> Jugar de nuevo desde el principio</button>
+  </div>
+</div>
+
+</div><!-- /card -->
+<div class="tt" id="tt"></div>
+
+<script>
+/* ── QUIZ ENGINE ── */
+var score=0,total=0,answered={},log=[];
+var QINFO={
+  q1:'Método STOP en una emergencia',
+  q2:'Orientación con la Osa Mayor',
+  q3:'Por qué hervir el agua del río',
+  q4:'Triángulo del fuego',
+  q5:'Por qué el refugio debe ser pequeño',
+  q6:'Aislamiento del suelo en el refugio',
+  q7:'Peligro de los hongos desconocidos',
+  q8:'Alimentos más seguros en el bosque',
+  q9:'Humo blanco como señal de rescate',
+  q10:'Código universal de socorro (número 3)',
+  q11:'Primer paso para tratar una herida',
+  q12:'Qué NO hacer ante mordedura de serpiente',
+  q13:'Señales que permitieron el rescate',
+  q14:'Regla de los 3 días sin agua',
+  q15:'Mensaje principal de la historia'
+};
+var OKS=['⭐ ¡Excelente! Respuesta correcta.','⭐ ¡Muy bien! Leíste con atención.','⭐ ¡Perfecto! Joaquín estaría orgulloso.','⭐ ¡Correcto! Gran lector/a.','⭐ ¡Así es! Lo entendiste perfectamente.'];
+var NOPE=['💡 No es esa. La correcta está marcada en verde.','💡 Casi, pero no. Revisa la información arriba.','💡 No exactamente. Mira la respuesta correcta.'];
+
+function go(id){
+  document.querySelectorAll('.scene').forEach(function(s){s.classList.remove('active');});
+  var t=document.getElementById(id);
+  if(t){t.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+  if(id==='sfinal'){buildFinal();buildMap();}
+}
+function ans(qid,type,btn,fbId,nextId){
+  if(answered[qid])return;
+  answered[qid]=true;total++;
+  var fb=document.getElementById(fbId);
+  var area=btn.closest('.carea');
+  var allBtns=area.querySelectorAll('.abtn:not(.go-btn):not(.retry-btn):not(.replay-btn)');
+  allBtns.forEach(function(b){b.disabled=true;});
+  var ok=(type==='correct');
+  if(ok){score++;btn.classList.add('correct');fb.className='fb ok';fb.innerHTML=OKS[Math.floor(Math.random()*OKS.length)];}
+  else{
+    btn.classList.add('wrong');fb.className='fb bad';fb.innerHTML=NOPE[Math.floor(Math.random()*NOPE.length)];
+    allBtns.forEach(function(b){if((b.getAttribute('onclick')||'').indexOf("'correct'")!==-1)b.classList.add('correct');});
+  }
+  log.push({q:qid,tema:QINFO[qid]||qid,ok:ok});
+  document.getElementById(nextId).style.display='flex';
+  updateHdr();
+}
+function updateHdr(){
+  var f=total>0?Math.round((score/total)*5):0;
+  var s='';for(var i=0;i<5;i++)s+=(i<f?'⭐':'☆');
+  document.getElementById('hstars').textContent=s;
+  document.getElementById('hcount').textContent=score+'/'+total;
+}
+function buildFinal(){
+  var pct=total>0?Math.round((score/total)*100):0;
+  var f=Math.round(pct/20);
+  var s='';for(var i=0;i<5;i++)s+=(i<f?'⭐':'☆');
+  document.getElementById('fstars').textContent=s;
+  var msgs=['¡Sigue practicando, explorador!','¡Buen intento! Puedes mejorar.','¡Bien hecho! Vas por buen camino.','¡Excelente! Serías gran explorador/a.','🏆 ¡PERFECTO! ¡Eres un experto en supervivencia!'];
+  document.getElementById('fmsg').textContent=msgs[f]||msgs[3];
+  document.getElementById('fsub').textContent='Respondiste '+score+' de '+total+' correctamente ('+pct+'%)';
+  document.getElementById('sv-ok').textContent=score;
+  document.getElementById('sv-no').textContent=total-score;
+  document.getElementById('sv-pct').textContent=pct+'%';
+  var tbody=document.getElementById('stbody');tbody.innerHTML='';
+  log.forEach(function(item,i){
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td style="font-weight:800;color:var(--txm)">'+(i+1)+'</td>'+
+      '<td style="font-size:13px">'+item.tema+'</td>'+
+      '<td style="text-align:center">'+(item.ok?'<span class="tok">✓ Correcta</span>':'<span class="tno">✗ Repasar</span>')+'</td>';
+    tbody.appendChild(tr);
+  });
+  var malos=log.filter(function(x){return !x.ok;});
+  if(malos.length>0){
+    document.getElementById('repaso-block').style.display='block';
+    var html='<div class="ib-title" style="color:var(--am6)">📌 Temas que debes repasar</div><p>';
+    malos.forEach(function(m,i){html+=(i+1)+'. '+m.tema+'<br>';});
+    html+='</p>';
+    document.getElementById('repaso-list').innerHTML=html;
+  }
+}
+function resetGame(){
+  score=0;total=0;answered={};log=[];updateHdr();
+  document.querySelectorAll('.fb').forEach(function(f){f.className='fb';f.innerHTML='';});
+  document.querySelectorAll('.abtn').forEach(function(b){
+    b.classList.remove('correct','wrong');b.disabled=false;
+    if(b.classList.contains('go-btn'))b.style.display='none';
+  });
+  document.getElementById('repaso-block').style.display='none';
+  go('s0');
+}
+
+/* ── MAPA CONCEPTUAL ── */
+var mapBuilt=false;
+function buildMap(){
+  if(mapBuilt)return;mapBuilt=true;
+  var NS='http://www.w3.org/2000/svg';
+  var svg=document.getElementById('mapa');
+
+  var THEMES=[
+    {id:'stop',  label:'Método\nSTOP',   icon:'🧠', fill:'#FDF3D8',stroke:'#C47F00',tc:'#5C3200',
+     tip:'Parar, Pensar, Observar, Planificar. Primer paso ante cualquier emergencia. El pánico es el peor enemigo.',
+     children:[
+       {label:'Calma\nmental',  icon:'😤',fill:'#FDF3D8',stroke:'#EDBC5A',tc:'#5C3200',tip:'Respirar profundo y no tomar decisiones apresuradas ahorra energía y evita errores graves.'},
+       {label:'Evaluar\nel entorno', icon:'👁️',fill:'#FDF3D8',stroke:'#EDBC5A',tc:'#5C3200',tip:'Observar peligros cercanos, recursos disponibles (agua, madera, refugio natural) y condiciones climáticas.'},
+     ]},
+    {id:'orient',label:'Orientación\nNatural', icon:'🧭', fill:'#E8F4FD',stroke:'#4A7FBF',tc:'#1A3050',
+     tip:'Orientarse sin brújula usando el sol, estrellas, musgo en árboles y el curso de los ríos.',
+     children:[
+       {label:'Sol y\nestrellas',  icon:'⭐',fill:'#E8F4FD',stroke:'#9FC5E8',tc:'#1A3050',tip:'El sol sale por el este y se pone por el oeste. La Estrella Polar siempre marca el norte. La Osa Mayor apunta a ella.'},
+       {label:'Ríos y\nbosque',    icon:'🌿',fill:'#EDF5D0',stroke:'#B8D470',tc:'#1A2200',tip:'Los ríos corren cuesta abajo hacia poblados. El musgo crece más en el lado norte de los árboles.'},
+     ]},
+    {id:'agua',  label:'Agua y\nPurificación', icon:'💧', fill:'#E8F4FD',stroke:'#4A7FBF',tc:'#1A3050',
+     tip:'El agua es la segunda prioridad. Sin ella el cuerpo falla en 3 días. Siempre purificarla antes de beber.',
+     children:[
+       {label:'Hervir\nel agua',   icon:'🔥',fill:'#F5ECD8',stroke:'#D4A96A',tc:'#2C1A00',tip:'1 minuto de hervor elimina bacterias, parásitos y virus. Es el método más seguro en campo.'},
+       {label:'Filtrar\ny solar',  icon:'☀️',fill:'#F5ECD8',stroke:'#D4A96A',tc:'#2C1A00',tip:'Filtrar por arena y carbón vegetal elimina partículas. La luz solar 6+ horas en botella transparente mata microorganismos.'},
+     ]},
+    {id:'fuego', label:'El Fuego', icon:'🔥', fill:'#F5ECD8',stroke:'#8B5216',tc:'#2C1A00',
+     tip:'Triángulo del fuego: combustible + calor + oxígeno. Vital para calentar, purificar agua y hacer señales.',
+     children:[
+       {label:'Triángulo\ndel fuego', icon:'🪵',fill:'#F5ECD8',stroke:'#D4A96A',tc:'#2C1A00',tip:'Combustible (yesca seca), calor (lupa, fricción) y oxígeno (soplar suave). Sin uno de los tres no hay fuego.'},
+       {label:'Señal\nde rescate', icon:'💨',fill:'#EDF5D0',stroke:'#B8D470',tc:'#1A2200',tip:'Ramas verdes al fuego producen humo blanco visible desde el aire. El fuego de noche es visible a kilómetros.'},
+     ]},
+    {id:'refugio',label:'Refugio\nde Emergencia',icon:'🛖', fill:'#EDF5D0',stroke:'#5C7A14',tc:'#1A2200',
+     tip:'Primera prioridad de supervivencia. Protege de hipotermia, viento y lluvia. Construirlo pequeño y aislado del suelo.',
+     children:[
+       {label:'Lean-to\ny aislamiento',icon:'🍃',fill:'#EDF5D0',stroke:'#B8D470',tc:'#1A2200',tip:'Ramas sobre un tronco caído, cubierto de hojas. Hojas secas en el suelo aíslan del frío que roba el calor.'},
+       {label:'Hipotermia\nprevención',icon:'🌡️',fill:'#E8F4FD',stroke:'#9FC5E8',tc:'#1A3050',tip:'Bajo 35°C de temperatura corporal el cuerpo falla. El viento húmedo enfría 25 veces más que el aire seco.'},
+     ]},
+    {id:'socorro',label:'Señales y\nSocorro', icon:'📡', fill:'#F2EFFE',stroke:'#7B5EC4',tc:'#2A1550',
+     tip:'Hacerse visible y audible para los rescatistas es la tercera prioridad. El código universal son 3 señales.',
+     children:[
+       {label:'Código de\n3 señales', icon:'🆘',fill:'#F2EFFE',stroke:'#C0AEED',tc:'#2A1550',tip:'Tres gritos, tres fogatas en triángulo o tres destellos de espejo. Cualquier equipo de rescate reconoce esta señal.'},
+       {label:'Marcas\nen tierra',   icon:'✈️',fill:'#F2EFFE',stroke:'#C0AEED',tc:'#2A1550',tip:'Una X o SOS de al menos 3 metros con ramas o piedras en un claro es visible desde el aire.'},
+     ]},
+  ];
+
+  function el(tag,attrs){
+    var e=document.createElementNS(NS,tag);
+    for(var k in attrs)e.setAttribute(k,attrs[k]);
+    return e;
+  }
+
+  // defs shadow
+  var defs=el('defs',{});
+  var flt=el('filter',{id:'ms',x:'-20%',y:'-20%',width:'140%',height:'140%'});
+  flt.appendChild(el('feDropShadow',{dx:'0',dy:'2',stdDeviation:'3','flood-color':'rgba(0,0,0,.09)'}));
+  defs.appendChild(flt);svg.appendChild(defs);
+
+  var CX=520,CY=92,TW=168,TH=76,CW=148,CH=64;
+  var COLS=[160,520,880],ROWS=[260,590];
+  function tp(i){return{x:COLS[i%3],y:ROWS[Math.floor(i/3)]};}
+  function cp(pos,ci,tot){
+    var gap=158;var sx=pos.x-((tot-1)*gap)/2;
+    return{x:sx+ci*gap,y:pos.y+175};
+  }
+
+  // connectors layer
+  var cl=el('g',{});svg.appendChild(cl);
+
+  function curve(x1,y1,x2,y2,stroke,dash){
+    var cx1=x1+(x2-x1)*.15,cy1=y1+(y2-y1)*.6;
+    var cx2=x2-(x2-x1)*.15,cy2=y1+(y2-y1)*.4;
+    var p=el('path',{d:'M'+x1+','+y1+' C'+cx1+','+cy1+' '+cx2+','+cy2+' '+x2+','+y2,
+      fill:'none',stroke:stroke,'stroke-width':'2','stroke-opacity':'.4','stroke-dasharray':dash||''});
+    cl.appendChild(p);
+  }
+
+  // center → themes
+  THEMES.forEach(function(th,i){
+    var pos=tp(i);
+    curve(CX,CY+38,pos.x,pos.y-TH/2-2,th.stroke,'');
+  });
+  // themes → children
+  THEMES.forEach(function(th,i){
+    var pos=tp(i);
+    th.children.forEach(function(ch,ci){
+      var c=cp(pos,ci,th.children.length);
+      curve(pos.x,pos.y+TH/2+2,c.x,c.y-CH/2-2,th.stroke,'4 3');
+    });
+  });
+
+  var nl=el('g',{});svg.appendChild(nl);
+
+  var tip=document.getElementById('tt');
+  function addNode(x,y,w,h,r,data,isBig){
+    var g=el('g',{style:'cursor:pointer'});
+    var box=el('rect',{x:x-w/2,y:y-h/2,width:w,height:h,rx:r,ry:r,
+      fill:data.fill,stroke:data.stroke,'stroke-width':'2',filter:'url(#ms)'});
+    g.appendChild(box);
+    // icon
+    var iY=y-(isBig?8:6);
+    var iT=el('text',{x:x-w/2+18,y:iY,'text-anchor':'middle','dominant-baseline':'middle',
+      'font-size':isBig?'22':'18'});
+    iT.textContent=data.icon;g.appendChild(iT);
+    // label lines
+    var lines=(data.label||'').split('\n');
+    var lx=x+8,fs=isBig?'13':'11.5';
+    var lh=parseFloat(fs)*1.3,tot=lines.length*lh;
+    lines.forEach(function(line,li){
+      var t=el('text',{x:lx,y:y-tot/2+lh/2+li*lh,
+        'text-anchor':'middle','dominant-baseline':'middle',
+        'font-size':fs,'font-weight':'800','font-family':'Nunito,sans-serif',fill:data.tc});
+      t.textContent=line;g.appendChild(t);
+    });
+    g.addEventListener('mouseenter',function(e){
+      tip.innerHTML='<b>'+(data.label||'').replace('\n',' ')+'</b><br>'+(data.tip||'');
+      tip.classList.add('on');
+    });
+    g.addEventListener('mousemove',function(e){
+      var tx=e.clientX+14,ty=e.clientY-8;
+      if(tx+240>window.innerWidth)tx=e.clientX-244;
+      tip.style.left=tx+'px';tip.style.top=ty+'px';
+    });
+    g.addEventListener('mouseleave',function(){tip.classList.remove('on');});
+    nl.appendChild(g);
+  }
+
+  // center node
+  addNode(CX,CY,170,76,38,{
+    label:'Supervivencia\nen la Naturaleza',icon:'🏕️',
+    fill:'#6B3F0A',stroke:'#2C1A00',tc:'#fff',
+    tip:'El conocimiento de supervivencia te permite mantenerte seguro cuando la naturaleza presenta desafíos inesperados.'
+  },true);
+
+  // theme + child nodes
+  THEMES.forEach(function(th,i){
+    var pos=tp(i);
+    addNode(pos.x,pos.y,TW,TH,15,th,false);
+    th.children.forEach(function(ch,ci){
+      var c=cp(pos,ci,th.children.length);
+      addNode(c.x,c.y,CW,CH,12,ch,false);
+    });
+  });
+
+  // section labels
+  var SLABELS=[
+    {x:COLS[0],y:ROWS[0]-TH/2-24,text:'🟡 MENTALIDAD',c:'#5C3200'},
+    {x:COLS[1],y:ROWS[0]-TH/2-24,text:'🔵 ORIENTACIÓN',c:'#1A3050'},
+    {x:COLS[2],y:ROWS[0]-TH/2-24,text:'🔵 AGUA',c:'#1A3050'},
+    {x:COLS[0],y:ROWS[1]-TH/2-24,text:'🟤 FUEGO',c:'#2C1A00'},
+    {x:COLS[1],y:ROWS[1]-TH/2-24,text:'🟢 REFUGIO',c:'#1A2200'},
+    {x:COLS[2],y:ROWS[1]-TH/2-24,text:'🟣 RESCATE',c:'#2A1550'},
+  ];
+  SLABELS.forEach(function(lb){
+    var bg=el('rect',{x:lb.x-82,y:lb.y-11,width:164,height:22,rx:99,
+      fill:'#fffcf5',stroke:'rgba(100,60,10,.15)','stroke-width':'1'});
+    svg.appendChild(bg);
+    var t=el('text',{x:lb.x,y:lb.y,'text-anchor':'middle','dominant-baseline':'middle',
+      'font-size':'10','font-weight':'800','font-family':'Nunito,sans-serif',
+      fill:lb.c,'letter-spacing':'.04em'});
+    t.textContent=lb.text;svg.appendChild(t);
+  });
+}
+</script>
+</body>
+</html>
